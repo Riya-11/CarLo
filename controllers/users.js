@@ -11,9 +11,9 @@ const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: {
-    user: 'teamcarlo26@gmail.com',
-    pass: 'Root@1234'
+  auth: {   
+    user: 'eproject839@gmail.com',
+    pass: 'eadproject123@'
   }
 });
 
@@ -218,3 +218,23 @@ module.exports = {
   },
 
 }
+
+
+
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+// Use the GoogleStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and Google
+//   profile), and invoke a callback with a user object.
+passport.use(new GoogleStrategy({
+    clientID: "830673104376-g9th5aiuk1cm93sqh5mrrk888bt60jor.apps.googleusercontent.com",
+    clientSecret: "pjS9yxzKW2Me8PHX9Joiu8Qk",
+    callbackURL: "http://localhost:5000/"
+  },
+  function(accessToken, refreshToken, profile, done) {
+       User.findOrCreate({ googleId: profile.id }, function (err, user) {
+         return done(err, user);
+       });
+  }
+));
