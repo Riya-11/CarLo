@@ -49,7 +49,8 @@ const vehicleSchema = new Schema({
     // default: Date.now
   },
   carImage:{
-    type:String,
+    data: Buffer,
+    contentType: String,
   },
   pricing: Number,
   rating: Number

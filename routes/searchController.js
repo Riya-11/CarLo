@@ -9,19 +9,20 @@ router.get("/", urlencodedParser, async (req, res, next) => {
       availableFrom = req.body.from;
       availableTill = req.body.to;
 
-      var datetime = new Date();
-      default_date = datetime.toISOString().slice(0,10);
-      if (!req.body.from){
-        availableFrom = default_date;
-      }
+      // var datetime = new Date();
+      // default_date = datetime.toISOString().slice(0,10);
+      // if (!req.body.from){
+      //   availableFrom = default_date;
+      // }
 
-      if(!req.body.to){
+      // if(!req.body.to){
         
-        availableTill = availableFrom;
-      }
-        city = req.body.city.toLowerCase();
+      //   availableTill = availableFrom;
+      // }
 
-        await Vehicles.find({city:city,availableFrom:availableFrom,availableTill:availableTill}).then(async function(record) {
+        city = req.body.city.toLowerCase();
+        //availableFrom:availableFrom,availableTill:availableTill
+        await Vehicles.find({city:city}).then(async function(record) {
             await record;
             res.json(record);
 
