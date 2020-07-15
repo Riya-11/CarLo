@@ -21,7 +21,7 @@ const fileFilter = (req,file,cb) => {
     cb(null,true);
   }
   else{
-    cb(null,flase);
+    cb(new Error('Invalid file type'),false);
 
   }
   
@@ -40,135 +40,68 @@ router.use(requireAuth);
 
 
 router.post("/", upload.single('carImage'), async (req, res, next) => {
-  try {
-      await req.user;
-      // console.log(req.file);
-      
-      availableFrom = req.body.from;
-      availableTill = req.body.to;
+      try {
+          await req.user;
+          console.log(req.file);
+          availableFrom = req.body.from;
+          availableTill = req.body.to;
 
-      var datetime = new Date();
-      default_date = datetime.toISOString().slice(0,10);
-      if (!req.body.from){
-        availableFrom = default_date;
-      }
+          var datetime = new Date();
+          default_date = datetime.toISOString().slice(0,10);
+          if (!req.body.from){
+            availableFrom = default_date;
+          }
 
-      if(!req.body.to){
-        
-        availableTill = availableFrom;
-      }
-      
-      var vehicle = new Vehicles({
-      hostId: req.user._id,
-      make : req.body.make.toLowerCase(),
-      model : req.body.model.toLowerCase(),
-      vin : req.body.vin,
-      street : req.body.street.toLowerCase(),
-      city : req.body.city.toLowerCase(),
-      availableFrom : availableFrom,
-      availableTill : availableTill,
-      carImage: {
-        data: fs.readFileSync(req.file.path),
-        contentType: req.file.mimetype
-      },
-      pricing : req.body.pricing
-      });
-    
-    
-      vehicle
-    .save()
-    .then(result => {
-      console.log(result);
-      res.status(201).json({
-        message: "Uploaded car successfully",
-        uploadedCar: {
-          _id: result._id,
-          hostId: result.hostId,
-          make : result.make,
-          model : result.model,
-          VIN : result.VIN,
-          Street : result.Street,
-          City : result.City,
-          availableFrom : result.availableFrom,
-          availableTill : result.availableTill,
-          Pricing : result.pricing,
-            request: {
-                type: 'GET',
-                url: "http://localhost:3000/products/" + result._id
-            }
-        }
-      });
-    })
-
-
-      } catch (error) {
-    next(error);
-  }
-});
-
-
-// router.post("/", upload.single('carImage'), async (req, res, next) => {
-//       try {
-//           await req.user;
-//           console.log(req.file);
-//           availableFrom = req.body.from;
-//           availableTill = req.body.to;
-
-//           var datetime = new Date();
-//           default_date = datetime.toISOString().slice(0,10);
-//           if (!req.body.from){
-//             availableFrom = default_date;
-//           }
-
-//           if(!req.body.to){
+          if(!req.body.to){
             
-//             availableTill = availableFrom;
-//           }
+            availableTill = availableFrom;
+          }
           
-//           var vehicle = new Vehicles({
-//           hostId: req.user._id,
-//           make : req.body.make.toLowerCase(),
-//           model : req.body.model.toLowerCase(),
-//           vin : req.body.vin,
-//           street : req.body.street.toLowerCase(),
-//           city : req.body.city.toLowerCase(),
-//           availableFrom : availableFrom,
-//           availableTill : availableTill,
-//           carImage: req.file.path,
-//           pricing : req.body.pricing
-//           });
+          var vehicle = new Vehicles({
+          hostId: req.user._id,
+          make : req.body.make.toLowerCase(),
+          model : req.body.model.toLowerCase(),
+          vin : req.body.vin,
+          street : req.body.street.toLowerCase(),
+          city : req.body.city.toLowerCase(),
+          availableFrom : availableFrom,
+          availableTill : availableTill,
+          carImage: req.file.path,
+          pricing : req.body.pricing
+          });
         
         
-//           vehicle
-//         .save()
-//         .then(result => {
-//           console.log(result);
-//           res.status(201).json({
-//             message: "Uploaded car successfully",
-//             uploadedCar: {
-//               _id: result._id,
-//               hostId: result.hostId,
-//               make : result.make,
-//               model : result.model,
-//               VIN : result.VIN,
-//               Street : result.Street,
-//               City : result.City,
-//               availableFrom : result.availableFrom,
-//               availableTill : result.availableTill,
-//               Pricing : result.pricing,
-//                 request: {
-//                     type: 'GET',
-//                     url: "http://localhost:3000/products/" + result._id
-//                 }
-//             }
-//           });
-//         })
+        vehicle
+        .save()
+        .then(result => {
+          console.log(result);
+          res.status(201).json({
+            message: "Uploaded car successfully",
+            uploadedCar: {
+              _id: result._id,
+              hostId: result.hostId,
+              make : result.make,
+              model : result.model,
+              VIN : result.VIN,
+              Street : result.Street,
+              City : result.City,
+              availableFrom : result.availableFrom,
+              availableTill : result.availableTill,
+              carImage: result.carImage,
+              Pricing : result.pricing,
+                request: {
+                    type: 'GET',
+                    url: "http://localhost:3000/products/" + result._id
+                }
+            }
+          });
+        })
 
 
-//           } catch (error) {
-//         next(error);
-//       }
-//     });
+          } catch (error) {
+        next(error);
+      }
+    });
 
 module.exports = router;
 
