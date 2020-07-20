@@ -4,13 +4,10 @@ router.get("/", async (req, res, next) => {
 
     try{
     
-    const hostId = req.body.hostId;
-    
-    console.log('Hereeee');
-    console.log(req.user);
+    const hostId = req.query.hostId;
     await User.findById(hostId).then(async function(user){
         await user;
-        await Vehicles.findOne({hostId:hostId}).then(async function(cars) {
+        await Vehicles.find({hostId:hostId}).then(async function(cars) {
             await cars;
             console.log(cars);
             return res.send({

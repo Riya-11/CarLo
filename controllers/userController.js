@@ -7,12 +7,13 @@ User = models.User;
 const nodemailer = require('nodemailer');
 const rn = require("random-number");
 const bcrypt = require('bcrypt');
+const credentails = require('../Credentials/credentials');
 
 const transporter = nodemailer.createTransport({
     service:'gmail',
     auth: { 
-        user: '	carlorentalservice@gmail.com',
-        pass: 'RoOt1234'
+        user:credentails.emailId,
+        pass:credentails.passwd
     }
 });
 
@@ -41,7 +42,7 @@ module.exports = {
             Have a pleasant day.`
     
             const mailOptions = {
-                from: 'projectrasoise@gmail.com',
+                from: 'carlorentalservice@gmail.com',
                 to: email,
                 subject: 'Please verify your email',
                 text: html

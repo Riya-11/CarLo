@@ -4,6 +4,10 @@ var urlencodedParser = bodyParser.urlencoded({ extended: true });
 const models = require('../models/models');
 const multer = require('multer');
 const fs = require('fs');
+Vehicles = models.Vehicle;
+const credentails = require('../Credentials/credentials');
+
+
 const storage = multer.diskStorage({
   destination:function(req,file,cb){
     cb(null,'./uploads/');
@@ -33,7 +37,21 @@ const upload = multer({
 },
   fileFilter: fileFilter
 });
-Vehicles = models.Vehicle;
+
+
+const NodeGeocoder = require('node-geocoder');
+ 
+const options = {
+  provider: "google",
+
+  // Optional depending on the providers
+  httpAdapter: "https", // Default
+  apiKey: credentails.mapAPIKey, // for Mapquest, OpenCage, Google Premier
+  formatter: null // 'gpx', 'string', ...
+};
+
+const geocoder = NodeGeocoder(options);
+
 
 const requireAuth = require('../middlewares/requireAuth');
 router.use(requireAuth);
@@ -56,7 +74,14 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
             
             availableTill = availableFrom;
           }
-          
+          // Using callback
+          const loc = await geocoder.geocode(req.body.street.toLowerCase()+" "+req.body.city.toLowerCase());
+          const lat = loc[0]["latitude"];
+          const lng = loc[0]["longitude"];
+
+          console.log(lat,lng);
+          /////////////
+
           var vehicle = new Vehicles({
           hostId: req.user._id,
           make : req.body.make.toLowerCase(),
@@ -64,6 +89,9 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
           vin : req.body.vin,
           street : req.body.street.toLowerCase(),
           city : req.body.city.toLowerCase(),
+          geometry: { 
+            coordinates: [lng,lat]
+        },
           availableFrom : availableFrom,
           availableTill : availableTill,
           carImage: req.file.path,
@@ -85,6 +113,10 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
               VIN : result.VIN,
               Street : result.Street,
               City : result.City,
+              geometry: { 
+                "type": "Point",
+                "coordinates": [lat,lng]
+            },
               availableFrom : result.availableFrom,
               availableTill : result.availableTill,
               carImage: result.carImage,
