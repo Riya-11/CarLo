@@ -22,10 +22,9 @@ var gen = rn.generator({
     integer: true
 });
 
-
 module.exports = {
     signUp: async (req,res) => {
-        var { email, password, confirmPassword } = req.body;
+        var { email, password, confirmPassword,firstName,lastName, cellNo } = req.body;
 
         const user = await User.findOne({ email });
         if(user){
@@ -68,7 +67,7 @@ module.exports = {
             // });
             password = await models.hashPassword(password);
     
-            const user = new User ({ email, password, secretToken, active: false });
+            const user = new User ({ email, password,firstName,lastName,cellNo, secretToken, active: false });
             console.log('user',user);
 
             await user.save();
@@ -105,7 +104,10 @@ module.exports = {
             await user.comparePassword(password);
             const token = jwt.sign({ userId : user._id }, 'MY_SECRET_KEY' );
     
-            res.send({ token });
+            res.send(
+                {token:token,
+                userId:user._id }
+                );
         } catch (err){
             return res.status(422).send({ error:'Invalid password or email'});
         }
@@ -114,6 +116,10 @@ module.exports = {
         const { token, email } = req.body;
         const foundUser = await User.findOne({ "email" : email });
         
+        if(!foundUser){
+            return res.status(422).send({ error:'Invalid user!'});
+        }
+
         if(foundUser.secretToken != token){
             return res.status(422).send({ error:'Invalid code!!'});
         }
@@ -127,4 +133,30 @@ module.exports = {
         return res.send({ message: 'Verified' });
 
     }
+    // viewProfile: async (req,res, next) => {
+
+    //     try{
+    //         const email = req.user.email;
+    //         const firstName = req.user.firstName;
+    //         const lastName = req.user.lastName;
+    //         const cellNo = req.user.cellNo;
+        
+    //         await Vehicles.find({hostId:req.user._id}).then(async function(cars) {
+    //             await cars;
+    //             console.log(cars);
+    //             return res.send({
+    //                 email:email,
+    //                 firstName:firstName,
+    //                 lastName:lastName,
+    //                 cellNo:cellNo,
+    //                 cars:cars
+    //              });
+    //         });
+    //     }
+    //         catch (error) {
+    //             next(error);
+    //           }
+        
+    // }
+
 }

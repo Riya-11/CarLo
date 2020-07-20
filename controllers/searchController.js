@@ -3,6 +3,8 @@ var bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
 const models = require('../models/models');
 const Vehicles = models.Vehicle;
+const user_model = require('../models/User');
+const Users = user_model.User;
 
 //returns true if date1 occurs later than date2
 function compareDates(date1, date2){
@@ -48,9 +50,14 @@ router.get("/", urlencodedParser, async (req, res, next) => {
                 a = compareDates(availableFrom,records[i].availableFrom);
                 b = compareDates(records[i].availableTill,availableTill);
                 
-                console.log(a+b);
+                // console.log(a+b);
                 if(a && b){
-                  result.push(records[i]);
+                  var temp = {};
+                  const current_user = await Users.findById(records[i].hostId);
+                  temp["firstName"] = current_user.firstName;
+                  temp["lastName"] = current_user.lastName ;
+                  temp["cellNo"] = current_user.cellNo;
+                  result.push({...records[i]["_doc"], ...temp});
                 }
 
               }

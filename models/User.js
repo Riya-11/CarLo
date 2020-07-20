@@ -20,11 +20,18 @@ const userSchema = new Schema({
         type:Boolean
     },
 
-    name:{
-        type:String
+    firstName:{
+        type:String,
+        required: true
+    },
+    lastName:{
+        type:String,
+        required:true
     },
      cellNo:{
-        type:String
+        type:Number,
+        unique:true,
+        required: true
     },
     hostRating:{
         type:Number

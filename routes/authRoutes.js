@@ -18,4 +18,7 @@ router.route('/signin')
 router.route('/verify')
     .post(UsersController.verify);
 
+// router.route('/prof')
+//     .get(UsersController.viewProfile);
+
 module.exports = router;

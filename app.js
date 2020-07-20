@@ -18,10 +18,14 @@ const app = express();
 //Middlewares
 app.use(bodyParser.json());
 app.use('/uploads',express.static('uploads/'));
+
 //Routes
 app.use('', require('./routes/authRoutes'));
-app.use('/search', require('./routes/searchController.js'));
-app.use('/upload',require('./routes/uploadController.js'));
+app.use('/search', require('./controllers/searchController.js'));
+app.use('/upload',require('./controllers/uploadController.js'));
+app.use('/profile/view',require('./controllers/viewProfileController.js'));
+app.use('/profile/edit',require('./controllers/editProfileController.js'));
+
 // app.use('/executive',require('./routes/executive'));
 
 app.get('/', requireAuth, (req,res) => {

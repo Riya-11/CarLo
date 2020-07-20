@@ -4,7 +4,7 @@ module.exports = {
     validateBody: (schema) => {
         return(req,res,next) => {
             const result = Joi.validate(req.body, schema);
-            // console.log(result.error);
+            console.log(result.error);
             if(result.error) {
                 return res.status(422).send({ error : 'Invalid Credentials'})
             }
@@ -18,11 +18,13 @@ module.exports = {
 
     schemas: {
         authSchema: Joi.object().keys({
-           
+            firstName: Joi.string().min(2).max(50).required(),
+            lastName: Joi.string().min(2).max(50).required(),
+            cellNo: Joi.number().min(1000000000).max(9999999999).required(),
             email: Joi.string().email().required(),
             password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
             confirmPassword: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } })
-         
+            
         })
     },
 
@@ -43,11 +45,10 @@ module.exports = {
 
     editProfile: {
         authSchema: Joi.object().keys({
-            firstname: Joi.string().required(),
-            lastname: Joi.string().required(),
-            contactno :Joi.number().min(1000000000).max(9999999999).required(),
-            address: Joi.string().required()
-         
+            firstName: Joi.string().required(),
+            lastName: Joi.string().required(),
+            cellNo :Joi.number().min(1000000000).max(9999999999).required()
+            //Joi.number().min(1000000000).max(9999999999).required(),         
         })
     },
 
