@@ -12,8 +12,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'teamcarlo26@gmail.com',
-    pass: 'Root@1234'
+    user: 'eproject839@gmail.com',
+    pass: 'eadproject123@'
   }
 });
 
@@ -86,7 +86,7 @@ module.exports = {
             Have a pleasant day.`
 
         const mailOptions = {
-          from: 'projectrasoise@gmail.com',
+          from: 'eproject839@gmail.com',
           to: email,
           subject: 'Please verify your email',
           text: html
@@ -153,7 +153,7 @@ module.exports = {
             Have a pleasant day.`
 
       const mailOptions = {
-        from: 'projectrasoise@gmail.com',
+        from: 'eproject839@gmail.com',
         to: email,
         subject: 'Please check your email',
         text: html

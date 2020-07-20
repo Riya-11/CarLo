@@ -1,22 +1,18 @@
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
+const rateSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-  email: {
+  rating: {
     type: String,
     required: true
   },
-  password: {
+  review: {
     type: String,
     required: true
   },
-  secretToken : {
-    type:String
-  },
-  active: Boolean,
   date: {
     type: Date,
     default: Date.now
@@ -25,8 +21,8 @@ const UserSchema = new mongoose.Schema({
 
 
 
-const User = mongoose.model('User', UserSchema);
+const rate = mongoose.model('rate', rateSchema);
 
-module.exports = { User };
+module.exports = { rate };
 
 

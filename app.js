@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -12,7 +13,7 @@ require('./config/passport')(passport);
 
 var connection = require("./connection");
 
-
+app.use(bodyParser.json());
 // EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
@@ -46,6 +47,7 @@ app.use(function (req, res, next) {
 
 // Routes
 app.use('/', require('./routes/index.js'));
+app.use('/rate',require('./routes/rating.js'));
 app.use('/users', require('./routes/users.js'));
 app.use(express.static(__dirname + '/public'));
 
