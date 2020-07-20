@@ -79,8 +79,7 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
           const lat = loc[0]["latitude"];
           const lng = loc[0]["longitude"];
 
-          console.log(lat,lng);
-          /////////////
+          // console.log(lat,lng);
 
           var vehicle = new Vehicles({
           hostId: req.user._id,

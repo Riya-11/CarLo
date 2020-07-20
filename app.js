@@ -25,6 +25,8 @@ app.use('/search', require('./controllers/searchController.js'));
 app.use('/upload',require('./controllers/uploadController.js'));
 app.use('/profile/view',require('./controllers/viewProfileController.js'));
 app.use('/profile/edit',require('./controllers/editProfileController.js'));
+app.use('/book',require('./controllers/bookingController.js'));
+app.use('/endTrip',require('./controllers/endTripController.js'));
 
 // app.use('/executive',require('./routes/executive'));
 

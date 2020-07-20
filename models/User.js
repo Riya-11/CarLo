@@ -30,42 +30,17 @@ const userSchema = new Schema({
     },
      cellNo:{
         type:Number,
-        unique:true,
         required: true
     },
     hostRating:{
         type:Number
     },
-    custRating:{
-        type:Number
-    }
+    hostReview:[],
+    notifications:[]
+    // custRating:{
+    //     type:Number
+    // }
 });
-
-
-// userSchema.pre('save', function(next){
-//     const user = this;
-//     if(!user.isModified){
-//         return next();
-//     }
-
-//     // console.log(user);
-//     bcrypt.genSalt(10, (err, salt) => {
-//         if(err){
-//             return next(err);
-//         }
-
-//         bcrypt.hash(user.password, salt, (err, hash) => {
-//             if(err) {
-//                 return next(err);
-//             }
-
-//             user.password = hash;
-//             next();
-            
-//         })
-//     });
-// });
-
 
 userSchema.methods.comparePassword = function(candidatePassword){
     const user = this;

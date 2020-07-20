@@ -14,13 +14,6 @@ const vehicleSchema = new Schema({
   vin: String,
   street: String,
   city: String,
-  // lat: {
-  //   type: SchemaTypes.Double
-  // },
-  // lng: {
-  //     type: SchemaTypes.Double
-  // },
-
   geometry: {
     type: {
       type: String,
@@ -28,8 +21,6 @@ const vehicleSchema = new Schema({
     },
     coordinates: []
   },
-
-
   availableFrom: {
     type: String,
   },
@@ -39,16 +30,55 @@ const vehicleSchema = new Schema({
   carImage:{
     type:String
   },
-  // carImage:{
-  //   data: Buffer,
-  //   contentType: String,
-  // },
   pricing: Number,
   rating: Number
 });
 vehicleSchema.index({ "loc": "2dsphere" });
 
+const tripSchema = new Schema({
+  carId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Vehicle'
+  },
+  hostId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'User'
+  },
+  custId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'User'
+  },
+  distance:Number,
+  bookingDate: String,
+  startDate:String,
+  returnDate:String,
+  hostRating:Number,
+  carRating:Number,
+  ended:{
+    type:Boolean,
+    default: false
+  },
+  charge:Number
+
+});
+
+const reviewSchema = new Schema({
+
+  tripId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Trip'
+  },
+  reviewer:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'User'
+  },
+  review:String,
+  carRating:Number,
+  hostRating: Number
+});
+
+
 const vehicle = mongoose.model('Vehicle',vehicleSchema);
-
-module.exports = {Vehicle:vehicle };
-
+const trip = mongoose.model('Trip',tripSchema);
+const review = mongoose.model('Review',reviewSchema);
+module.exports = {Vehicle:vehicle,Trip:trip,Review:review};

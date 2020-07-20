@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const models = require('../models/User');
+const user_models = require('../models/User');
 
 const requireAuth = require('../middlewares/requireAuth');
-const Users = models.User;
+const Users = user_models.User;
 router.use(requireAuth);
 
 router.post("/", async (req, res, next) => {
-
+    await req.user;
     try{
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
