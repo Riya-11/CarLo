@@ -18,13 +18,25 @@
     "express": "^4.16.4",
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.15.6",
+<<<<<<< HEAD
     "mongoose": "^5.9.25",
+=======
+    "mongodb": "^3.5.5",
+    "mongoose": "^5.9.7",
+>>>>>>> dbf33256595d98aa3d65327fd2801d3eae1f2e47
     "nodemailer": "^6.4.3",
     "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth": "^2.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
+<<<<<<< HEAD
     "randomstring": "^1.1.5",
     "rating": "^0.1.0"
+=======
+    "passport-oauth": "^1.0.0",
+    "randomstring": "^1.1.5"
+>>>>>>> dbf33256595d98aa3d65327fd2801d3eae1f2e47
   },
   "devDependencies": {
     "nodemon": "^1.18.9",
