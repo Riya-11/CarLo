@@ -25,7 +25,7 @@ app.use('/search', require('./controllers/searchController.js'));
 app.use('/upload',require('./controllers/uploadController.js'));
 app.use('/profile/view',require('./controllers/viewProfileController.js'));
 app.use('/profile/edit',require('./controllers/editProfileController.js'));
-
+app.use('/rate',require('./routes/rating.js'));
 // app.use('/executive',require('./routes/executive'));
 
 app.get('/', requireAuth, (req,res) => {
