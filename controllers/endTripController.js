@@ -2,6 +2,7 @@ const router = require("express").Router();
 const user_models = require('../models/User');
 const models = require('../models/models');
 const requireAuth = require('../middlewares/requireAuth');
+const { Executive } = require("../models/models");
 const User = user_models.User;
 router.use(requireAuth);
 Trips = models.Trip;
@@ -16,12 +17,21 @@ router.post("/", async (req, res, next) => {
         var review = req.body.review;
         var custId = req.user._id;
         var returnDate = req.body.returnDate;
-        var hostId;
+        var hostId,carId;
         
         await Trips.findById(tripId).then(async function(trip){
             await trip;
             hostId = trip.hostId;
+            carId = trip.carId;
         });
+        const carfilter = { _id:carId };
+        const carupdate = { 
+            booked:false
+         };
+
+        let updatedCar = await Vehicles.findOneAndUpdate(carfilter, carupdate, {
+            new: true
+          });
 
         const filter = { _id:req.body.tripId };
         const update = { 
@@ -54,25 +64,28 @@ router.post("/", async (req, res, next) => {
                 await host.save();
             });
 
-
-          res.status(201).json({
-            message: "Trip Ended successfully",
-            tripDetails: {
-                tripId:updatedTrip._id,
-                carId:updatedTrip.carId,
-                hostId:updatedTrip.host,
-                custId:updatedTrip.custId,
-                distance:updatedTrip.distance,
-                bookingDate: updatedTrip.bookingDate,
-                startDate:updatedTrip.startDate,
-                returnDate:updatedTrip.returnDate,
-                hostRating:updatedTrip.hostRating,
-                carRating:updatedTrip.carRating,
-                ended:updatedTrip.ended,
-                charge:updatedTrip.charge
-            }
-          });
-
+            //get executive instance
+            Executive.findById(updatedTrip.execId).then(async function(exec){
+                await exec;
+                res.status(201).json({
+                    message: "Trip Ended successfully",
+                    tripDetails: {
+                        tripId:updatedTrip._id,
+                        carId:updatedTrip.carId,
+                        hostId:updatedTrip.host,
+                        custId:updatedTrip.custId,
+                        executive:exec,
+                        distance:updatedTrip.distance,
+                        bookingDate: updatedTrip.bookingDate,
+                        startDate:updatedTrip.startDate,
+                        returnDate:updatedTrip.returnDate,
+                        hostRating:updatedTrip.hostRating,
+                        carRating:updatedTrip.carRating,
+                        ended:updatedTrip.ended,
+                        charge:updatedTrip.charge
+                    }
+                  });
+            });
         });
 
     }catch (error) {

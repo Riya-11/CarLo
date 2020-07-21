@@ -27,6 +27,7 @@ app.use('/profile/view',require('./controllers/viewProfileController.js'));
 app.use('/profile/edit',require('./controllers/editProfileController.js'));
 app.use('/book',require('./controllers/bookingController.js'));
 app.use('/endTrip',require('./controllers/endTripController.js'));
+app.use('/trips',require('./controllers/getTripController.js'));
 
 // app.use('/executive',require('./routes/executive'));
 

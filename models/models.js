@@ -12,6 +12,7 @@ const vehicleSchema = new Schema({
   make: String,
   model: String,
   vin: String,
+  seatingCapacity: Number,
   street: String,
   city: String,
   geometry: {
@@ -31,7 +32,11 @@ const vehicleSchema = new Schema({
     type:String
   },
   pricing: Number,
-  rating: Number
+  rating: Number,
+  booked:{
+    type:Boolean,
+    default:false
+  }
 });
 vehicleSchema.index({ "loc": "2dsphere" });
 
@@ -47,6 +52,10 @@ const tripSchema = new Schema({
   custId:{
     type: mongoose.Schema.Types.ObjectId,
     ref:'User'
+  },
+  execId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:'Executive'
   },
   distance:Number,
   bookingDate: String,
@@ -77,8 +86,27 @@ const reviewSchema = new Schema({
   hostRating: Number
 });
 
+const executiveSchema = new Schema({
+  name:{
+    type:String,
+    required:true
+  },
+  street:{
+    type: String,
+    required:true
+  },
+  city:{
+    type: String,
+    required:true
+  },
+  cellNo:{
+    type:Number,
+    required:true
+  }
+});
 
 const vehicle = mongoose.model('Vehicle',vehicleSchema);
 const trip = mongoose.model('Trip',tripSchema);
 const review = mongoose.model('Review',reviewSchema);
-module.exports = {Vehicle:vehicle,Trip:trip,Review:review};
+const executive = mongoose.model('Executive',executiveSchema);
+module.exports = {Vehicle:vehicle,Trip:trip,Review:review,Executive:executive};

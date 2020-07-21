@@ -61,20 +61,31 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
       try {
           await req.user;
           console.log(req.file);
-          availableFrom = req.body.from;
-          availableTill = req.body.to;
-
+          // availableFrom = req.body.from;
+          // availableTill = req.body.to;
+          var availableFrom, availableTill, seatingCapacity;
           var datetime = new Date();
           default_date = datetime.toISOString().slice(0,10);
           if (!req.body.from){
             availableFrom = default_date;
           }
+          else{
+            availableFrom = req.body.from;
+          }
 
-          if(!req.body.to){
-            
+          if(!req.body.to){         
             availableTill = availableFrom;
           }
-          // Using callback
+          else{
+            availableTill = req.body.to;
+          }
+
+          if(!req.body.seatingCapacity){
+            seatingCapacity = 4;
+          }
+          else{
+            seatingCapacity = req.body.seatingCapacity;
+          }
           const loc = await geocoder.geocode(req.body.street.toLowerCase()+" "+req.body.city.toLowerCase());
           const lat = loc[0]["latitude"];
           const lng = loc[0]["longitude"];
@@ -86,6 +97,7 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
           make : req.body.make.toLowerCase(),
           model : req.body.model.toLowerCase(),
           vin : req.body.vin,
+          seatingCapacity: seatingCapacity,
           street : req.body.street.toLowerCase(),
           city : req.body.city.toLowerCase(),
           geometry: { 
@@ -110,6 +122,7 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
               make : result.make,
               model : result.model,
               VIN : result.VIN,
+              seatingCapacity:seatingCapacity,
               Street : result.Street,
               City : result.City,
               geometry: { 
