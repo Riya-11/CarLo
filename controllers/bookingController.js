@@ -48,7 +48,7 @@ router.post("/", async (req, res, next) => {
             deliveryExecutive = await Executive.findOne({city:city});    
             if(deliveryExecutive){
                 console.log(deliveryExecutive);
-                newTrip = {...newTrip,execId:deliveryExecutive._id};
+                newTrip = {...newTrip,execId:deliveryExecutive._id,custAddress:req.body.custAddress};
             }      
         }
 
@@ -84,7 +84,7 @@ router.post("/", async (req, res, next) => {
             tripDetails: {
                 tripId:result._id,
                 carId:result.carId,
-                hostId:result.host,
+                hostId: result.hostId,
                 custId:result.custId,
                 executive:deliveryExecutive,
                 distance:result.distance,
@@ -94,7 +94,8 @@ router.post("/", async (req, res, next) => {
                 charge:result.charge,
                 hostName: hostName,
                 custName: custName,
-                carName: carName
+                carName: carName,
+                custAddress: result.custAddress
             }
           });
         // });

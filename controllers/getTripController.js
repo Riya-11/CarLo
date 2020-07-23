@@ -18,12 +18,12 @@ router.get("/", async (req, res, next) => {
 
         await User.findById(userId).then(async function(user){
             await user;
-            custName = user.firstName + " " + user.lastName;
-
             for(i=0;i<user.notifications.length;i++){
                 var notif = await Trip.findById(user.notifications[i]);
                 var host = await User.findById(notif.hostId);
                 hostName = host.firstName + " " + host.lastName;
+                var cust = await User.findById(notif.custId); 
+                custName = cust.firstName + " " + cust.lastName;
                 var car = await Vehicle.findById(notif.carId);
                 var carName = car.make + "-" + car.model;
 

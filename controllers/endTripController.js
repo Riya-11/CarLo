@@ -21,7 +21,7 @@ router.post("/", async (req, res, next) => {
 
         var cust = await User.findById(custId);
         var custName = cust.firstName + " " + cust.lastName;
-        
+
         await Trips.findById(tripId).then(async function(trip){
             await trip;
             hostId = trip.hostId;
@@ -88,6 +88,7 @@ router.post("/", async (req, res, next) => {
                         returnDate:updatedTrip.returnDate,
                         hostRating:updatedTrip.hostRating,
                         carRating:updatedTrip.carRating,
+                        custAddress: updatedTrip.custAddress,
                         ended:updatedTrip.ended,
                         charge:updatedTrip.charge,
                         hostName: hostName, 

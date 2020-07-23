@@ -42,7 +42,7 @@ const upload = multer({
 const NodeGeocoder = require('node-geocoder');
  
 const options = {
-  provider: "google",
+  provider: "mapquest",
 
   // Optional depending on the providers
   httpAdapter: "https", // Default
@@ -60,9 +60,6 @@ router.use(requireAuth);
 router.post("/", upload.single('carImage'), async (req, res, next) => {
       try {
           await req.user;
-          console.log(req.file);
-          // availableFrom = req.body.from;
-          // availableTill = req.body.to;
           var availableFrom, availableTill, seatingCapacity;
           var datetime = new Date();
           default_date = datetime.toISOString().slice(0,10);
@@ -89,8 +86,6 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
           const loc = await geocoder.geocode(req.body.street.toLowerCase()+" "+req.body.city.toLowerCase());
           const lat = loc[0]["latitude"];
           const lng = loc[0]["longitude"];
-
-          // console.log(lat,lng);
 
           var vehicle = new Vehicles({
           hostId: req.user._id,
@@ -140,7 +135,6 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
             }
           });
         })
-
 
           } catch (error) {
         next(error);

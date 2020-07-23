@@ -61,6 +61,7 @@ const tripSchema = new Schema({
   bookingDate: String,
   startDate:String,
   returnDate:String,
+  custAddress:String,
   hostRating:Number,
   carRating:Number,
   ended:{
