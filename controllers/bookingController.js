@@ -18,13 +18,14 @@ router.post("/", async (req, res, next) => {
         var carId = req.body.carId;
         var charge = req.body.charge;
         var deliveryReqd = req.body.delivery;
-        var hostId,city;
+        var hostId,city,custName,hostName,carName;
         
         await Vehicle.findById(carId).then(async function(car){
             await car;
             hostId = car.hostId;
             city = car.city;
             car.booked = true;
+            carName = car.make + "-" + car.model; 
             await car.save();
 
         });
@@ -52,25 +53,32 @@ router.post("/", async (req, res, next) => {
         }
 
         var trip = new Trips(newTrip);
-
-        trip
-        .save()
-        .then(result => {
+        result = await trip.save();
+        // trip
+        // .save()
+        // .then(result => {
         
             //Notify host            
-            User.findById(hostId).then(async function(host) {
+            await User.findById(hostId).then(async function(host) {
                     await host;
+                    console.log("Host-------");
+                    console.log(host);
+                    hostName = host.firstName + " " + host.lastName;
                     host.notifications.push(result._id);
                     await host.save();
                 });
             
             //Notify customer
-            User.findById(req.user._id).then(async function(cust){
+            await User.findById(req.user._id).then(async function(cust){
                 await cust;
+                console.log("Cust-------");
+                console.log(cust);
+                custName = cust.firstName + " " + cust.lastName;
                 cust.notifications.push(result._id);
                 await cust.save();
             });
-
+            console.log(custName);
+            console.log(hostName);
           res.status(201).json({
             message: "Booking completed successfully",
             tripDetails: {
@@ -83,10 +91,13 @@ router.post("/", async (req, res, next) => {
                 bookingDate: result.bookingDate,
                 startDate:result.startDate,
                 returnDate:result.returnDate,
-                charge:result.charge
+                charge:result.charge,
+                hostName: hostName,
+                custName: custName,
+                carName: carName
             }
           });
-        });
+        // });
     }
         catch (error) {
             next(error);

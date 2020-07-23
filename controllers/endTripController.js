@@ -17,13 +17,17 @@ router.post("/", async (req, res, next) => {
         var review = req.body.review;
         var custId = req.user._id;
         var returnDate = req.body.returnDate;
-        var hostId,carId;
+        var hostId, carId, hostName;
+
+        var cust = await User.findById(custId);
+        var custName = cust.firstName + " " + cust.lastName;
         
         await Trips.findById(tripId).then(async function(trip){
             await trip;
             hostId = trip.hostId;
             carId = trip.carId;
         });
+
         const carfilter = { _id:carId };
         const carupdate = { 
             booked:false
@@ -32,7 +36,7 @@ router.post("/", async (req, res, next) => {
         let updatedCar = await Vehicles.findOneAndUpdate(carfilter, carupdate, {
             new: true
           });
-
+        var carName = updatedCar.make + "-" + updatedCar.model;
         const filter = { _id:req.body.tripId };
         const update = { 
             carRating: carRating,
@@ -57,10 +61,13 @@ router.post("/", async (req, res, next) => {
         .save()
         .then(result => {
 
+            
             //Update User's rating and review
             User.findById(hostId).then(async function(host) {
                 await host;
                 host.hostReview.push(result._id);
+                hostName = host.firstName + " " + host.lastName;
+
                 await host.save();
             });
 
@@ -82,7 +89,10 @@ router.post("/", async (req, res, next) => {
                         hostRating:updatedTrip.hostRating,
                         carRating:updatedTrip.carRating,
                         ended:updatedTrip.ended,
-                        charge:updatedTrip.charge
+                        charge:updatedTrip.charge,
+                        hostName: hostName, 
+                        custName: custName, 
+                        carName: carName
                     }
                   });
             });
