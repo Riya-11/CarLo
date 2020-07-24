@@ -24,16 +24,16 @@ router.get("/", async (req, res, next) => {
                 custName = cust.firstName + " " + cust.lastName;
                 var car = await Vehicle.findById(notif.carId);
                 var carName = car.make + "-" + car.model;
-
+                var carAddress = car.street + "," + car.city;
                 var exec = await Executive.findById(notif.execId);
                 if(exec){
                     execName = exec.name;
                     execCell = exec.cellNo;
-                    notifications.push({ ...notif['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell });
+                    notifications.push({ ...notif['_doc'], hostName: hostName, custName: custName, carName: carName, carAddress: carAddress, execName: execName, execCell: execCell });
                 }
 
                 else{
-                    notifications.push({ ...notif['_doc'], hostName: hostName, custName: custName, carName: carName});
+                    notifications.push({ ...notif['_doc'], hostName: hostName, custName: custName, carName: carName, carAddress: carAddress});
                 }
             }    
         });

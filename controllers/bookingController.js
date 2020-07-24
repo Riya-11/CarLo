@@ -18,6 +18,7 @@ router.post("/", async (req, res, next) => {
         var carId = req.body.carId;
         var charge = req.body.charge;
         var deliveryReqd = req.body.delivery;
+        var transactionId = req.body.transactionId;
         var hostId,city,custName,hostName,carName,carAddress;
         
         await Vehicle.findById(carId).then(async function(car){
@@ -41,7 +42,8 @@ router.post("/", async (req, res, next) => {
             bookingDate: bookingDate,
             startDate:startDate,
             returnDate:returnDate,
-            charge:charge
+            charge:charge,
+            transactionId: transactionId
       };
 
 

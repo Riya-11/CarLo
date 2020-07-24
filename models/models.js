@@ -61,6 +61,7 @@ const tripSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref:'Executive'
   },
+  transactionId:String,
   distance:Number,
   bookingDate: String,
   startDate:String,
