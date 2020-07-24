@@ -48,7 +48,7 @@ router.get("/", async (req, res, next) => {
                 hostName = host.firstName + " " + host.lastName;
                 var car = await Vehicle.findById(trips[i].carId);
                 var carName = car.make + "-" + car.model;
-                
+                var carAddress = car.street + "," + car.city;
 
                 var exec = await Executive.findById(trips[i].execId);
                 var temp;
@@ -56,10 +56,10 @@ router.get("/", async (req, res, next) => {
                 if(exec){
                     execName = exec.name;
                     execCell = exec.cellNo;
-                    temp = { ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell };
+                    temp = { ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, carAddress: carAddress, execName: execName, execCell: execCell };
                 }
                 else{
-                    temp = { ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName};
+                    temp = { ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, carAddress: carAddress};
                 }
                 if(trips[i].ended){
                     pastTrips.push(temp);
