@@ -1,5 +1,6 @@
 const { Review, Trip } = require("../models/models");
-
+const user_models = require("../models/User");
+const User = user_models.User;
 const router = require("express").Router();
 
 router.get("/", async (req, res, next) => {
@@ -17,7 +18,9 @@ router.get("/", async (req, res, next) => {
         for(i=0;i<user.hostReview.length;i++){
             var review = await Review.findById(user.hostReview[i]);
             if(review){
-                ratings.push(review);
+                console.log(review);
+                reviewerName = await User.findById(review.reviewer);
+                ratings.push({...review['_doc'],reviewerName:reviewerName.firstName + " " + reviewerName.lastName});
             }
             
         }

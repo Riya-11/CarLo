@@ -51,11 +51,11 @@ router.get("/", async (req, res, next) => {
                 execName = exec.name;
                 execCell = exec.cellNo;
 
-                if (compareDatesV2(today,trips[i].returnDate)){
-                    pastTrips.push({ ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell});
+                if(trips[i].ended){
+                    pastTrips.push({ ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell });
                 }
                 else{
-                    activeTrips.push({ ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell});
+                    activeTrips.push({ ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell });
                 }
             }
         });
