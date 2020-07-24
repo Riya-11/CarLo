@@ -3,8 +3,6 @@ const router = require("express").Router();
 const requireAuth = require('../middlewares/requireAuth');
 const user_models = require('../models/User');
 const User = user_models.User;
-const { compareDatesV2} = require('../helpers/dateCompareHelper');
-
 
 router.use(requireAuth);
 router.get("/", async (req, res, next) => {
@@ -28,10 +26,15 @@ router.get("/", async (req, res, next) => {
                 var carName = car.make + "-" + car.model;
 
                 var exec = await Executive.findById(notif.execId);
-                execName = exec.name;
-                execCell = exec.cellNo;
+                if(exec){
+                    execName = exec.name;
+                    execCell = exec.cellNo;
+                    notifications.push({ ...notif['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell });
+                }
 
-                notifications.push({...notif['_doc'], hostName:hostName,custName:custName,carName:carName,execName:execName,execCell:execCell});
+                else{
+                    notifications.push({ ...notif['_doc'], hostName: hostName, custName: custName, carName: carName});
+                }
             }    
         });
 
@@ -48,14 +51,21 @@ router.get("/", async (req, res, next) => {
                 
 
                 var exec = await Executive.findById(trips[i].execId);
-                execName = exec.name;
-                execCell = exec.cellNo;
+                var temp;
 
-                if(trips[i].ended){
-                    pastTrips.push({ ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell });
+                if(exec){
+                    execName = exec.name;
+                    execCell = exec.cellNo;
+                    temp = { ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell };
                 }
                 else{
-                    activeTrips.push({ ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName, execName: execName, execCell: execCell });
+                    temp = { ...trips[i]['_doc'], hostName: hostName, custName: custName, carName: carName};
+                }
+                if(trips[i].ended){
+                    pastTrips.push(temp);
+                }
+                else{
+                    activeTrips.push(temp);
                 }
             }
         });

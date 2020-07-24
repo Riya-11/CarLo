@@ -32,7 +32,11 @@ const vehicleSchema = new Schema({
     type:String
   },
   pricing: Number,
-  rating: Number,
+  numTrips:{
+    type:Number,
+    default:0
+  },
+  rating: {type:Number,default:4},
   booked:{
     type:Boolean,
     default:false

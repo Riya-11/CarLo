@@ -18,7 +18,7 @@ router.post("/", async (req, res, next) => {
         var carId = req.body.carId;
         var charge = req.body.charge;
         var deliveryReqd = req.body.delivery;
-        var hostId,city,custName,hostName,carName;
+        var hostId,city,custName,hostName,carName,carAddress;
         
         await Vehicle.findById(carId).then(async function(car){
             await car;
@@ -26,6 +26,7 @@ router.post("/", async (req, res, next) => {
             city = car.city;
             car.booked = true;
             carName = car.make + "-" + car.model; 
+            carAddress = car.street + "," + car.city;
             await car.save();
 
         });
@@ -54,9 +55,6 @@ router.post("/", async (req, res, next) => {
 
         var trip = new Trips(newTrip);
         result = await trip.save();
-        // trip
-        // .save()
-        // .then(result => {
         
             //Notify host            
             await User.findById(hostId).then(async function(host) {
@@ -82,23 +80,14 @@ router.post("/", async (req, res, next) => {
           res.status(201).json({
             message: "Booking completed successfully",
             tripDetails: {
-                tripId:result._id,
-                carId:result.carId,
-                hostId: result.hostId,
-                custId:result.custId,
+                ...result['_doc'],
                 executive:deliveryExecutive,
-                distance:result.distance,
-                bookingDate: result.bookingDate,
-                startDate:result.startDate,
-                returnDate:result.returnDate,
-                charge:result.charge,
                 hostName: hostName,
                 custName: custName,
                 carName: carName,
-                custAddress: result.custAddress
+                carAddress: carAddress
             }
           });
-        // });
     }
         catch (error) {
             next(error);

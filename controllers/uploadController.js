@@ -112,26 +112,12 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
           res.status(201).json({
             message: "Uploaded car successfully",
             uploadedCar: {
-              _id: result._id,
-              hostId: result.hostId,
-              make : result.make,
-              model : result.model,
-              VIN : result.VIN,
+              ...result['_doc'],
               seatingCapacity:seatingCapacity,
-              Street : result.Street,
-              City : result.City,
               geometry: { 
                 "type": "Point",
                 "coordinates": [lat,lng]
-            },
-              availableFrom : result.availableFrom,
-              availableTill : result.availableTill,
-              carImage: result.carImage,
-              Pricing : result.pricing,
-                request: {
-                    type: 'GET',
-                    url: "http://localhost:3000/products/" + result._id
-                }
+            }              
             }
           });
         })
@@ -142,4 +128,3 @@ router.post("/", upload.single('carImage'), async (req, res, next) => {
     });
 
 module.exports = router;
-

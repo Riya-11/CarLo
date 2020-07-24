@@ -3,6 +3,8 @@ const user_models = require('../models/User');
 const models = require('../models/models');
 const requireAuth = require('../middlewares/requireAuth');
 const { Executive } = require("../models/models");
+const { Number } = require("mongoose");
+// const { parseFloat} = require('Float');
 const User = user_models.User;
 router.use(requireAuth);
 Trips = models.Trip;
@@ -17,7 +19,7 @@ router.post("/", async (req, res, next) => {
         var review = req.body.review;
         var custId = req.user._id;
         var returnDate = req.body.returnDate;
-        var hostId, carId, hostName;
+        var hostId, carId, hostName, carName, carAddress;
 
         var cust = await User.findById(custId);
         var custName = cust.firstName + " " + cust.lastName;
@@ -28,15 +30,16 @@ router.post("/", async (req, res, next) => {
             carId = trip.carId;
         });
 
-        const carfilter = { _id:carId };
-        const carupdate = { 
-            booked:false
-         };
-
-        let updatedCar = await Vehicles.findOneAndUpdate(carfilter, carupdate, {
-            new: true
-          });
-        var carName = updatedCar.make + "-" + updatedCar.model;
+        await Vehicles.findById(carId).then(async function(car){
+            await car;
+            
+            car.rating = ((parseFloat(car.rating) * parseFloat(car.numTrips)) + parseFloat(carRating)) / (parseFloat(car.numTrips)+1);
+            car.numTrips = parseFloat(car.numTrips) + 1;
+            car.booked=false;
+            carName = car.make + "-" + car.model;
+            carAddress = car.street + "," + car.city;
+            await car.save();
+        });
         const filter = { _id:req.body.tripId };
         const update = { 
             carRating: carRating,
@@ -70,30 +73,20 @@ router.post("/", async (req, res, next) => {
 
                 await host.save();
             });
-
+            console.log('Hostname---');
+            console.log(hostName);
             //get executive instance
             Executive.findById(updatedTrip.execId).then(async function(exec){
                 await exec;
                 res.status(201).json({
                     message: "Trip Ended successfully",
                     tripDetails: {
-                        tripId:updatedTrip._id,
-                        carId:updatedTrip.carId,
-                        hostId:updatedTrip.host,
-                        custId:updatedTrip.custId,
+                        ...updatedTrip['_doc'],
                         executive:exec,
-                        distance:updatedTrip.distance,
-                        bookingDate: updatedTrip.bookingDate,
-                        startDate:updatedTrip.startDate,
-                        returnDate:updatedTrip.returnDate,
-                        hostRating:updatedTrip.hostRating,
-                        carRating:updatedTrip.carRating,
-                        custAddress: updatedTrip.custAddress,
-                        ended:updatedTrip.ended,
-                        charge:updatedTrip.charge,
                         hostName: hostName, 
                         custName: custName, 
-                        carName: carName
+                        carName: carName,
+                        carAddress: carAddress
                     }
                   });
             });

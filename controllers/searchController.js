@@ -6,6 +6,8 @@ const Vehicles = models.Vehicle;
 const user_model = require('../models/User');
 const Users = user_model.User;
 const {compareDates} = require('../helpers/dateCompareHelper');
+const requireAuth = require('../middlewares/requireAuth');
+router.use(requireAuth);
 
 router.get("/", urlencodedParser, async (req, res, next) => {
     try {
@@ -13,7 +15,6 @@ router.get("/", urlencodedParser, async (req, res, next) => {
       console.log(req.user);
       var availableFrom = req.query.from;
       var availableTill = req.query.to;
-      var seatingCapacity;
       if (!availableFrom || !availableTill){
           res.send('INVALID REQUEST - Please enter both availableFrom and availableTill');
       }
@@ -29,11 +30,9 @@ router.get("/", urlencodedParser, async (req, res, next) => {
         
         await Vehicles.find(filter).then(async function(records) {
             await records;
-            console.log(records);
-            console.log(availableTill);
-
               for(i=0;i<records.length;i++){
-                if(req.user && records[i].hostId == req.user._id){continue}
+                console.log(JSON.stringify(records[i].hostId) === JSON.stringify(req.user._id));
+                if (JSON.stringify(records[i].hostId) === JSON.stringify(req.user._id)){continue}
                 a = compareDates(availableFrom,records[i].availableFrom);
                 b = compareDates(records[i].availableTill,availableTill);
                 
