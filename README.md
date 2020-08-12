@@ -4,51 +4,55 @@ CarLo is a mobile application where vehicle owners can post the details and avai
 ### Features - 
 
 #### 1. User Profile Management
-Developed an authentication system where - 
-New users can register
-Existing users can log in using their credentials (using OAuth and normal signin)
-User can view host’s cars, their location on maps, ratings on host’s profile.
+- New users can register
+- Existing users can log in using their credentials (using OAuth and normal signin)
+- User can view host’s cars, their location on maps, ratings on host’s profile.
 
 #### 2. Search
-Developed search module with following functionalities - 
-Searching for cars on the basis of Availability, Location
-Users can filter results based on Seating Capacity
-Map to pin-point the location of all cars.
-
+- Searching for cars on the basis of Availability, Location
+- Users can filter results based on Seating Capacity
+- Map to pin-point the location of all cars.
 
 #### 3. Booking
-Developed booking module with the following functionalities  - 
-View details of selected car
-View host and car reviews
-View contact information of host
-View Trip Charge (based on number of days, pricing of the car)
-Select delivery mode - self-pickup / delivery by executive 
+- View details of selected car
+- View host and car reviews
+- View contact information of host
+- View Trip Charge (based on number of days, pricing of the car)
+- Select delivery mode - self-pickup / delivery by executive 
 
 #### 4. Host Side
-Developed a module that can handle the following requests-
-User can list his car for renting
-The host of the car can view his ratings,reviews,etc.
-The host can view who booked his car and other trip details
-Map to pin-point the car location.
-The host receives monetary benefits for renting his car.
+- User can list his car for renting
+- The host of the car can view his ratings,reviews,etc.
+- The host can view who booked his car and other trip details
+- Map to pin-point the car location.
+- The host receives monetary benefits for renting his car.
 
 
 #### 5. Rate and Review
-Developed a module to handle the following - 
-User can rate the car, the host and write a review for the same.
-Rating of respective user will be visible on their profile.
+- User can rate the car, the host and write a review for the same.
+- Rating of respective user will be visible on their profile.
 
 #### 6. Trips
-API for viewing active and past bookings and to view notifications regarding new bookings.
+- API for viewing active and past bookings and to view notifications regarding new bookings.
 
 #### 7. Payment
-API for accessing the payment gateway for completing transactions.
+- API for accessing the payment gateway for completing transactions.
 APIs Developed: 
 https://api.stripe.com/v1/tokens - to access the Stripe Payment Gateway and acquire the transaction ID.
 
 #### 8. Delivery
-An executive is assigned for each trip if the customer opts for delivery.
+- An executive is assigned for each trip if the customer opts for delivery.
 
+
+### CarLo in action
+
+|              |   |
+:-------------------------:|:-------------------------:
+![Dashboard](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/dashboard.png)  |  ![Search Bar](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/search.png)
+![Search Results](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/search-results.png)  |  ![Search Results on Map](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/search-results-map.png)
+![Car Details](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/car-details.png)  |  ![Host Profile](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/host-profile.png)
+![Host Profile 2](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/host-pro2.png)  |  ![Notifications](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/notifs.png)
+![Upcoming](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/upcoming.png)  |  ![Car Listing](https://github.com/Riya-11/CarLo/blob/Riya/carlo-images/car-listing.png)
 
 ### Instructions to run - 
 Below commands work on Linux based systems. Suitable alternatives can be found for Windows as well.
